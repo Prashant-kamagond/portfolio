@@ -28,7 +28,7 @@ body { font-family: var(--sans); color: var(--text); background: var(--bg); line
 
 /* ── NAV ── */
 nav {
-  position: fixed; top: 0; width: 100%; z-index: 100;
+  position: relative; top: 0; width: 100%;
   background: rgba(255,255,255,0.92); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between;
@@ -47,7 +47,7 @@ nav {
 /* ── HERO ── */
 #hero {
   min-height: 100vh; display: flex; align-items: center;
-  padding: 100px 6vw 60px;
+  padding: 40px 6vw 60px;
   background: linear-gradient(160deg, #f0f6ff 0%, #ffffff 55%, #f8fafc 100%);
   position: relative; overflow: hidden;
 }
@@ -111,6 +111,24 @@ section { padding: 100px 6vw; }
 .intern-role { font-weight: 600; font-size: 0.9rem; color: var(--navy); }
 .intern-company { font-size: 0.8rem; color: var(--muted); }
 .intern-date { font-family: var(--mono); font-size: 0.72rem; color: var(--blue); background: var(--blue-light); padding: 4px 10px; border-radius: 99px; white-space: nowrap; }
+
+
+/* ── EXPERIENCE ── */
+#experience { background: var(--bg); }
+.exp-timeline { display: flex; flex-direction: column; gap: 2rem; }
+.exp-item { background: #fff; border: 1px solid var(--border); border-radius: 16px; padding: 2rem; transition: all .25s; position: relative; overflow: hidden; }
+.exp-item::before { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: var(--navy); border-radius: 4px 0 0 4px; transform: scaleY(0); transform-origin: top; transition: transform .3s; }
+.exp-item:hover::before { transform: scaleY(1); }
+.exp-item:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.08); transform: translateX(4px); }
+.exp-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.exp-role { font-family: var(--serif); font-size: 1.2rem; color: var(--navy); margin-bottom: 4px; }
+.exp-company { font-size: 0.875rem; color: var(--muted); font-weight: 500; }
+.exp-date-badge { font-family: var(--mono); font-size: 0.72rem; color: var(--blue); background: var(--blue-light); padding: 4px 12px; border-radius: 99px; white-space: nowrap; border: 1px solid #bfdbfe; }
+.exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.2rem; }
+.exp-bullets li { font-size: 0.875rem; color: var(--muted); line-height: 1.7; font-weight: 300; display: flex; gap: 10px; }
+.exp-bullets li::before { content: '→'; color: var(--blue); font-size: 0.8rem; margin-top: 2px; flex-shrink: 0; }
+.exp-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.exp-tags span { font-family: var(--mono); font-size: 0.68rem; padding: 3px 9px; background: var(--bg2); border: 1px solid var(--border); border-radius: 4px; color: var(--muted); }
 
 /* ── PROJECTS ── */
 #projects { background: var(--bg); }
@@ -197,8 +215,59 @@ footer span { color: #3b82f6; }
 .btn-resume:hover { background: #2563eb; border-color: #2563eb; transform: translateY(-2px); }
 
 /* ── SCROLL REVEAL ── */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
-.reveal.visible { opacity: 1; transform: none; }
+
+/* ── ANIMATIONS ── */
+/* All elements visible by default - CSS keyframe animations only */
+.reveal, .reveal-left, .reveal-right, .reveal-scale { opacity: 1 !important; transform: none !important; }
+
+/* Hero animations - CSS only, always work */
+.hero-badge  { animation: slideDown .5s ease .1s both; }
+.hero-name   { animation: slideDown .6s ease .2s both; }
+.hero-desc   { animation: slideDown .6s ease .3s both; }
+.hero-actions{ animation: slideDown .6s ease .4s both; }
+.hero-card   { animation: slideUp .7s ease .3s both; }
+.hero-geo    { animation: fadeIn 1s ease .5s both; }
+.hero-geo2   { animation: fadeIn 1s ease .7s both; }
+
+@keyframes slideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:none} }
+@keyframes slideUp   { from{opacity:0;transform:translateY(30px)}  to{opacity:1;transform:none} }
+@keyframes fadeIn    { from{opacity:0} to{opacity:1} }
+
+/* Section titles animate when in view using CSS only */
+.section-label { animation: slideDown .5s ease both; }
+.section-title { animation: slideDown .6s ease .1s both; }
+
+/* Hover effects */
+.proj-card:hover  { transform: translateY(-6px) !important; box-shadow: 0 16px 48px rgba(0,0,0,0.1) !important; }
+.skill-card:hover { transform: translateY(-4px) !important; box-shadow: 0 12px 32px rgba(0,0,0,0.08) !important; }
+.cert-card:hover  { transform: translateY(-4px) !important; }
+.exp-item:hover   { transform: translateX(6px) !important; }
+.proj-card, .skill-card, .cert-card, .exp-item { transition: transform .3s ease, box-shadow .3s ease !important; }
+
+/* Stagger project cards */
+.projects-grid .proj-card:nth-child(1){ animation: slideUp .5s ease .05s both; }
+.projects-grid .proj-card:nth-child(2){ animation: slideUp .5s ease .15s both; }
+.projects-grid .proj-card:nth-child(3){ animation: slideUp .5s ease .25s both; }
+.projects-grid .proj-card:nth-child(4){ animation: slideUp .5s ease .35s both; }
+
+/* Stagger skill cards */
+.skills-grid .skill-card:nth-child(1){ animation: slideUp .5s ease .05s both; }
+.skills-grid .skill-card:nth-child(2){ animation: slideUp .5s ease .15s both; }
+.skills-grid .skill-card:nth-child(3){ animation: slideUp .5s ease .25s both; }
+.skills-grid .skill-card:nth-child(4){ animation: slideUp .5s ease .35s both; }
+
+/* Stagger cert cards */
+.cert-grid .cert-card:nth-child(1){ animation: slideUp .5s ease .05s both; }
+.cert-grid .cert-card:nth-child(2){ animation: slideUp .5s ease .15s both; }
+.cert-grid .cert-card:nth-child(3){ animation: slideUp .5s ease .25s both; }
+
+/* Experience items */
+.exp-item:nth-child(1){ animation: slideUp .5s ease .1s both; }
+.exp-item:nth-child(2){ animation: slideUp .5s ease .25s both; }
+
+/* Nav */
+nav { animation: slideDown .4s ease both; }
+
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
@@ -223,6 +292,7 @@ footer span { color: #3b82f6; }
   <a href="#hero" class="nav-logo">PK<span>.</span></a>
   <ul class="nav-links">
     <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
     <li><a href="#projects">Projects</a></li>
     <li><a href="#skills">Skills</a></li>
     <li><a href="#certifications">Certifications</a></li>
@@ -237,6 +307,7 @@ footer span { color: #3b82f6; }
 <!-- MOBILE MENU -->
 <div id="mobile-menu" style="display:none;position:fixed;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);z-index:99;padding:1.5rem 6vw;flex-direction:column;gap:1.2rem;">
   <a href="#about" onclick="toggleMenu()" style="color:var(--navy);font-weight:500;text-decoration:none;font-size:0.95rem;">About</a>
+  <a href="#experience" onclick="toggleMenu()" style="color:var(--navy);font-weight:500;text-decoration:none;font-size:0.95rem;">Experience</a>
   <a href="#projects" onclick="toggleMenu()" style="color:var(--navy);font-weight:500;text-decoration:none;font-size:0.95rem;">Projects</a>
   <a href="#skills" onclick="toggleMenu()" style="color:var(--navy);font-weight:500;text-decoration:none;font-size:0.95rem;">Skills</a>
   <a href="#certifications" onclick="toggleMenu()" style="color:var(--navy);font-weight:500;text-decoration:none;font-size:0.95rem;">Certifications</a>
@@ -251,11 +322,6 @@ footer span { color: #3b82f6; }
       <h1 class="hero-name">Prashant<br/><em>Kamagond</em></h1>
       <p class="hero-desc">AI & ML Engineer passionate about building <strong style="color:var(--navy);font-weight:600;">Generative AI</strong>, Agentic systems, and data-driven solutions that solve real-world problems.</p>
       <div class="hero-actions">
-
-        <a href="https://github.com/Prashant-kamagond" target="_blank" class="btn-secondary">
-          GitHub
-        </a>
-
         <a href="#projects" class="btn-primary">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></svg>
           View Projects
@@ -313,7 +379,7 @@ footer span { color: #3b82f6; }
       <div class="divider"></div>
     </div>
     <div class="about-grid">
-      <div class="about-left reveal">
+      <div class="about-left reveal-left">
         <div class="about-initials">PK</div>
         <div class="about-info">
           <div class="about-info-item">
@@ -334,28 +400,60 @@ footer span { color: #3b82f6; }
           </div>
         </div>
       </div>
-      <div class="about-right reveal">
+      <div class="about-right reveal-right">
         <p>I'm an <strong>AI & Machine Learning engineering student</strong> at Acharya Institute of Technology, Bengaluru, with a CGPA of 8.50 and a deep passion for building intelligent systems that make a tangible impact.</p>
         <p>My journey into AI started with a curiosity about how machines can learn and reason. That curiosity led me to two hands-on internships — at <strong>Vyaas AI</strong>, where I built production-grade Voice and Document Agents, and at <strong>IBM SkillsBuild</strong>, where I worked with watsonx.ai and IBM Cloud to deploy real ML models.</p>
         <p>I love working at the intersection of <strong>Generative AI, cloud platforms, and practical ML engineering</strong> — building things that go beyond theory and actually work in the real world. I'm currently in my final year and actively seeking internship opportunities in GenAI, Agentic AI, and AI/ML engineering.</p>
 
-        <div class="internship-cards" style="margin-top:2rem;">
-          <div class="intern-card">
-            <div class="intern-left">
-              <div class="intern-role">GenAI Engineer Intern</div>
-              <div class="intern-company">Vyaas AI Pvt. Ltd., Bengaluru</div>
-            </div>
-            <span class="intern-date">Oct – Dec 2024</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="reveal">
+      <div class="section-label">Where I've Worked</div>
+      <h2 class="section-title">Experience</h2>
+      <div class="divider"></div>
+    </div>
+    <div class="exp-timeline">
+
+      <div class="exp-item reveal-scale">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">GenAI Engineer Intern</div>
+            <div class="exp-company">Vyaas AI Pvt. Ltd. &nbsp;·&nbsp; Bengaluru, India</div>
           </div>
-          <div class="intern-card">
-            <div class="intern-left">
-              <div class="intern-role">AI & Cloud Intern</div>
-              <div class="intern-company">IBM SkillsBuild / Edunet Foundation</div>
-            </div>
-            <span class="intern-date">Jul – Aug 2024</span>
-          </div>
+          <span class="exp-date-badge">Oct – Dec 2024</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Designed and deployed Agentic AI pipelines including Voice Agents and Document Agents, reducing manual processing time by 40%.</li>
+          <li>Validated LLM agent workflows using agents-fabric.ai, tracking accuracy, latency, and hallucination rates across multi-turn conversations.</li>
+        </ul>
+        <div class="exp-tags">
+          <span>Agentic AI</span><span>LLMs</span><span>Python</span><span>agents-fabric.ai</span><span>REST API</span>
         </div>
       </div>
+
+      <div class="exp-item reveal-scale">
+        <div class="exp-header">
+          <div>
+            <div class="exp-role">AI &amp; Cloud Intern</div>
+            <div class="exp-company">IBM SkillsBuild / Edunet Foundation &nbsp;·&nbsp; Remote</div>
+          </div>
+          <span class="exp-date-badge">Jul – Aug 2024</span>
+        </div>
+        <ul class="exp-bullets">
+          <li>Built and deployed an LLM-based chatbot on IBM Cloud using watsonx.ai with automated natural language response workflows.</li>
+          <li>Performed data preprocessing, feature engineering, and model optimisation using IBM Watson Studio and IBM Cloud Object Storage.</li>
+        </ul>
+        <div class="exp-tags">
+          <span>IBM Cloud</span><span>watsonx.ai</span><span>Watson Studio</span><span>Python</span><span>ML</span>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
@@ -371,7 +469,7 @@ footer span { color: #3b82f6; }
     </div>
     <div class="projects-grid">
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal-left">
         <div class="proj-num">01 / Healthcare ML</div>
         <h3 class="proj-title">Organ Donation Compatibility Prediction</h3>
         <p class="proj-desc">An ML-based donor-recipient matching system using SVM, Random Forest, and XGBoost to improve compatibility prediction accuracy. Applied domain-specific feature engineering and cross-validation to ensure robust, safety-critical performance.</p>
@@ -381,7 +479,7 @@ footer span { color: #3b82f6; }
         <div class="proj-highlight">22% accuracy improvement over baseline</div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal-right">
         <div class="proj-num">02 / AI Security</div>
         <h3 class="proj-title">Emotionally Intelligent Blockchain Security</h3>
         <p class="proj-desc">A hybrid AI-security system integrating real-time facial emotion recognition with blockchain-based IoT security. A rule engine dynamically adjusts security policies based on emotional context, making the system truly adaptive.</p>
@@ -391,7 +489,7 @@ footer span { color: #3b82f6; }
         <div class="proj-highlight">35% reduction in unauthorised access</div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal-left">
         <div class="proj-num">03 / Cybersecurity ML</div>
         <h3 class="proj-title">Network Intrusion Detection System</h3>
         <p class="proj-desc">An ML-based IDS built using IBM AutoAI and Watson Studio, classifying network traffic as benign or malicious using Decision Tree and Random Forest. Deployed on IBM watsonx.ai for real-time inference via REST API.</p>
@@ -401,7 +499,7 @@ footer span { color: #3b82f6; }
         <div class="proj-highlight">Real-time cloud deployment on IBM watsonx.ai</div>
       </div>
 
-      <div class="proj-card reveal">
+      <div class="proj-card reveal-right">
         <div class="proj-num">04 / Agentic AI</div>
         <h3 class="proj-title">Agentic AI Pipelines — Voice & Document Agents</h3>
         <p class="proj-desc">At Vyaas AI, designed and deployed production-grade Voice and Document Agents, reducing manual processing time by 40%. Evaluated agent pipelines using agents-fabric.ai and integrated outputs into live applications via REST APIs.</p>
@@ -515,19 +613,10 @@ footer span { color: #3b82f6; }
 <!-- RESUME DOWNLOAD -->
 <div class="resume-banner">
   <h3>Download My Resume</h3>
-  <p>Tailored versions for different roles — pick the one that fits the job you're hiring for.</p>
+  <p>A clean, one-page resume with all my experience, projects, and skills.</p>
   <div class="resume-buttons">
-    <a href="Prashant_Resume_GenAI_Engineer_Intern.pdf" class="btn-resume" download>
-      ↓ GenAI Engineer
-    </a>
-    <a href="Prashant_Resume_Agentic_AI_Intern.pdf" class="btn-resume" download>
-      ↓ Agentic AI
-    </a>
-    <a href="Prashant_Resume_AI_ML_Intern.pdf" class="btn-resume" download>
-      ↓ AI / ML Intern
-    </a>
-    <a href="Prashant_Resume_AI_Analyst.pdf" class="btn-resume" download>
-      ↓ AI Analyst
+    <a href="Prashant_Resume.pdf" class="btn-resume" download>
+      ↓ Download Resume
     </a>
   </div>
 </div>
@@ -548,7 +637,7 @@ footer span { color: #3b82f6; }
             <div class="contact-icon">
               <svg width="16" height="16" fill="none" stroke="#93c5fd" stroke-width="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </div>
-            <a href="mailto:prashantkamagond@gmail.com">prashantkamagond@gmail.com</a>
+            <a href="mailto:prashantkamagond@gmail.com" style="color:#93c5fd;">prashantkamagond@gmail.com</a>
           </div>
           <div class="contact-item">
             <div class="contact-icon">
@@ -566,7 +655,7 @@ footer span { color: #3b82f6; }
             <div class="contact-icon">
               <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24" style="color:#93c5fd"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
             </div>
-            <a href="https://github.com/Prashant-kamagond" target="_blank">github.com/Prashant-kamagond</a>
+            <a href="https://github.com/prashantkamagond" target="_blank">github.com/prashantkamagond</a>
           </div>
           <div class="contact-item">
             <div class="contact-icon">
@@ -619,16 +708,11 @@ function toggleMenu() {
   m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-// Staggered reveals in grids
-document.querySelectorAll('.projects-grid .reveal, .skills-grid .reveal, .cert-grid .reveal').forEach((el, i) => {
-  el.style.transitionDelay = (i * 0.08) + 's';
-});
+// No JS animations needed - using CSS only, 2000);
+} else {
+  // No IntersectionObserver support — show everything immediately
+  revealAll();
+}
 
 // Contact form
 function handleSubmit(e) {
@@ -647,15 +731,4 @@ function handleSubmit(e) {
 
 // Active nav link highlight
 window.addEventListener('scroll', () => {
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.nav-links a');
-  let current = '';
-  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.id; });
-  links.forEach(a => {
-    a.style.color = a.getAttribute('href') === '#'+current ? 'var(--navy)' : '';
-    a.style.fontWeight = a.getAttribute('href') === '#'+current ? '600' : '';
-  });
-});
-</script>
-</body>
-</html>
+  const sections = document.querySelectorAll('section[id]'
